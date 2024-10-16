@@ -2,34 +2,38 @@
 
     <body>
         <div class="container mt-4 w-75 shadow p-4 rounded">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input name="title" type="text" class="form-control" id="title" placeholder="Enter title here">
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="description" class="form-control" id="description" rows="3"
-                    placeholder="Enter description here"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="imageURL" class="form-label">Image Link</label>
-                <input name="imageURL" type="text" class="form-control" id="imageURL"
-                    placeholder="Enter image link here">
-            </div>
-            <div class="row">
-                <div class="mb-3 col-6">
-                    <label for="price" class="form-label">Price (Per Night)</label>
-                    <input name="price" type="text" class="form-control" id="price" placeholder="Enter price here">
+            <form action="/listings/addnew" method="post">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input name="title" type="text" class="form-control" id="title" placeholder="Enter title here">
                 </div>
-                <div class="mb-3 col-6">
-                    <label for="country" class="form-label">Country</label>
-                    <input name="country" type="text" class="form-control" id="country"
-                        placeholder="Enter country here">
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description" class="form-control" id="description" rows="3"
+                        placeholder="Enter description here"></textarea>
                 </div>
-            </div>
-            <div class="mb-3 ">
-                <label for="location" class="form-label">Location</label>
-                <input name="location" type="text" class="form-control" id="location" placeholder="Enter location here">
-            </div>
+                <div class="mb-3">
+                    <label for="imageURL" class="form-label">Image Link</label>
+                    <input name="imageURL" type="text" class="form-control" id="imageURL"
+                        placeholder="Enter image link here">
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-6">
+                        <label for="price" class="form-label">Price (Per Night)</label>
+                        <input name="price" type="text" class="form-control" id="price" placeholder="Enter price here">
+                    </div>
+                    <div class="mb-3 col-6">
+                        <label for="country" class="form-label">Country</label>
+                        <input name="country" type="text" class="form-control" id="country"
+                            placeholder="Enter country here">
+                    </div>
+                </div>
+                <div class="mb-3 ">
+                    <label for="location" class="form-label">Location</label>
+                    <input name="location" type="text" class="form-control" id="location"
+                        placeholder="Enter location here">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
     </body>

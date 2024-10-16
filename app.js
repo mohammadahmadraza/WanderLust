@@ -28,11 +28,38 @@ main().then(res => console.log('Connected to database successfully.'))
     .catch(err => console.log('Error Occured.', err));
 
 
-
 // show all listing route
 app.get('/listings', async (req, res) => {
     const listings = await Listing.find();
     res.render('listing/show.ejs', { listings });
+});
+
+// form to add new listing
+app.get('/listings/addnew', async (req, res) => {
+    // const listings = await Listing.find();
+    res.render('listing/add.ejs');
+});
+
+// To save add new listing data to database
+app.post('/listings/addnew', async (req, res) => {
+    let { title, description, imageURL, price, location, country } = req.body;
+
+    const newListing = new Listing({
+        title: title,
+        description: description,
+        imageURL: imageURL,
+        price: price,
+        location: location,
+        country: country
+    });
+    await newListing.save();
+    res.redirect('/listings');
+});
+
+// form to edit listing
+app.get('/listings/:listing_id/edit', async (req, res) => {
+    const listing = await Listing.findById(req.params.listing_id);
+    res.render('listing/edit.ejs', {listing});
 });
 
 
@@ -51,9 +78,7 @@ app.get('/listings', async (req, res) => {
 
 
 
-
-
-app.listen(8080, () => {
+app.listen(8000, () => {
     console.log('Server is running on port 8080.');
 
 })

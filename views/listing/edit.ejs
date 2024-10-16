@@ -1,0 +1,42 @@
+<% layout('layouts/user.ejs') -%>
+
+    <body>
+        <div class="container mt-4 w-75 shadow p-4 rounded">
+            <h3>Edit Listing</h3>
+            <form action="/listings/addnew" method="post">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input name="title" type="text" class="form-control" id="title" value="<%= listing.title %>"
+                        placeholder="Enter title here">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description" class="form-control" id="description"
+                         rows="3" placeholder="Enter description here"> <%= listing.description %></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="imageURL" class="form-label">Image Link</label>
+                    <input name="imageURL" type="text" class="form-control" id="imageURL"
+                        value="<%= listing.imageURL %>" placeholder="Enter image link here">
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-6">
+                        <label for="price" class="form-label">Price (Per Night)</label>
+                        <input name="price" type="text" class="form-control" id="price" value="<%= listing.price.toLocaleString('en-IN') %>"
+                            placeholder="Enter price here">
+                    </div>
+                    <div class="mb-3 col-6">
+                        <label for="country" class="form-label">Country</label>
+                        <input name="country" type="text" class="form-control" id="country"
+                            value="<%= listing.country %>" placeholder="Enter country here">
+                    </div>
+                </div>
+                <div class="mb-3 ">
+                    <label for="location" class="form-label">Location</label>
+                    <input name="location" type="text" class="form-control" id="location"
+                        value="<%= listing.location %>" placeholder="Enter location here">
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </body>
