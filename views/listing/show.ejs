@@ -1,0 +1,34 @@
+<% layout('layouts/user.ejs') -%>
+
+    <body>
+        <h3>All Listing</h3>
+        <div class="d-flex flex-wrap  justify-content-evenly">
+            <% for (listing of listings) { %>
+
+                <div class="card mt-4" style="width: 20rem;">
+                    <img src="<%= listing.imageURL %>" class="h-50 object-fit-cover img-thumbnail" alt="listing_image">
+                    <div class="card-body" >
+                        <h5 class="card-title">
+                            <%= listing.title %>
+                        </h5>
+                        <p class="card-text">
+                            <%= listing.description %>
+                        </p>
+                        <p class="card-text">
+                            Price &#8360;<%= listing.price.toLocaleString('en-IN') %>/Night
+                        </p>
+                        <p class="card-text">
+                            <%= listing.location %>, <span class="card-text">
+                                    <%= listing.country %>
+                                </span>
+                        </p>
+                        
+
+
+                        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                </div>
+                <% } %>
+        </div>
+
+    </body>
