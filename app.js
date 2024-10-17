@@ -59,10 +59,14 @@ app.post('/listings/addnew', async (req, res) => {
 // form to edit listing
 app.get('/listings/:listing_id/edit', async (req, res) => {
     const listing = await Listing.findById(req.params.listing_id);
-    res.render('listing/edit.ejs', {listing});
+    res.render('listing/edit.ejs', { listing });
 });
 
-
+// to view details of listing
+app.get('/listings/:listing_id/view', async (req, res) => {
+    const listing = await Listing.findById(req.params.listing_id);
+    res.render('listing/view.ejs', { listing });
+});
 
 
 

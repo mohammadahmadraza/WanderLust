@@ -4,13 +4,13 @@
         <h3>All Listing</h3>
         <div class="d-flex flex-wrap justify-content-evenly">
             <% for (listing of listings) { %>
-                <a href="/listings/<%= listing._id %>/edit">
-                    <div class="card mt-4" style="width: 20rem;">
-                        <img src="<%= listing.imageURL %>" class=" h-50 object-fit-cover img-thumbnail" alt="listing_image">
+                <a href="/listings/<%= listing._id %>/view" class="mt-4">
+                    <div class="card h-100" style="width: 20rem;">
+                        <img src="<%= listing.imageURL %>" class="h-50" alt="listing_image">
                         <div class="card-body">
-                            <h5 class="card-title">
+                            <h6 class="card-title">
                                 <%= listing.title %>
-                            </h5>
+                            </h6>
                             <p class="card-text">
                                 <%= listing.description %>
                             </p>
