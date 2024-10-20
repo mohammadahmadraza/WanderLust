@@ -5,17 +5,17 @@
         <div class="d-flex flex-wrap justify-content-evenly">
             <% for (listing of listings) { %>
                 <a href="/listings/<%= listing._id %>/view" class="mt-4">
-                    <div class="card h-100" style="width: 20rem;">
-                        <img src="<%= listing.imageURL %>" class="h-50" alt="listing_image">
+                    <div class="card h-100 shadow-card" style="width: 20rem;">
+                        <img src="<%= listing.imageURL %>" class="card_image" alt="listing_image">
                         <div class="card-body">
                             <h6 class="card-title">
                                 <%= listing.title %>
                             </h6>
-                            <p class="card-text">
+                            <p class="card-text text-truncate">
                                 <%= listing.description %>
                             </p>
                             <p class="card-text">
-                                Price &#8360; <%= listing.price.toLocaleString('en-IN') %>/Night
+                                 &#8360; <%= listing.price.toLocaleString('en-IN') %> / Night
                             </p>
                             <p class="card-text">
                                 <%= listing.location %>, <span class="card-text">

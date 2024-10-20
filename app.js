@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(methodoverride('__method'));
+app.use(methodoverride('_method'));
 app.engine('ejs', ejsMate);
 
 
@@ -28,19 +28,25 @@ main().then(res => console.log('Connected to database successfully.'))
     .catch(err => console.log('Error Occured.', err));
 
 
-// show all listing route
+// Show all listing route
 app.get('/listings', async (req, res) => {
     const listings = await Listing.find();
     res.render('listing/show.ejs', { listings });
 });
 
-// form to add new listing
+app.get('/', async (req, res) => {
+    const listings = await Listing.find();
+    res.render('listing/show.ejs', { listings });
+});
+
+
+// Form to add new listing
 app.get('/listings/addnew', async (req, res) => {
     // const listings = await Listing.find();
     res.render('listing/add.ejs');
 });
 
-// To save add new listing data to database
+// Save new listing data to database
 app.post('/listings/addnew', async (req, res) => {
     let { title, description, imageURL, price, location, country } = req.body;
 
@@ -56,17 +62,28 @@ app.post('/listings/addnew', async (req, res) => {
     res.redirect('/listings');
 });
 
-// form to edit listing
+// Form to edit listing
 app.get('/listings/:listing_id/edit', async (req, res) => {
     const listing = await Listing.findById(req.params.listing_id);
     res.render('listing/edit.ejs', { listing });
 });
 
-// to view details of listing
+// View details of listing
 app.get('/listings/:listing_id/view', async (req, res) => {
     const listing = await Listing.findById(req.params.listing_id);
     res.render('listing/view.ejs', { listing });
 });
+
+// Delete listing from database
+app.delete('/listings/:listing_id', async (req, res) => {
+
+    await Listing.findByIdAndDelete(req.params.listing_id)
+        .then(() => res.redirect('/listings'))
+        .catch((err) => {
+            res.send('Cannot delete due to error', err);
+        })
+
+})
 
 
 
@@ -83,7 +100,7 @@ app.get('/listings/:listing_id/view', async (req, res) => {
 
 
 app.listen(8000, () => {
-    console.log('Server is running on port 8080.');
+    console.log('Server is running on port 8000.');
 
 })
 
