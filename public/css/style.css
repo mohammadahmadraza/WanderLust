@@ -24,7 +24,9 @@ a {
 .icon_container {
     width: auto;
 }
-
+.icon_container:hover{
+    cursor: pointer;
+}
 .footer_site_links {
     margin: 1.2rem 1.2rem;
 }
