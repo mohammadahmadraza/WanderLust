@@ -68,6 +68,21 @@ app.get('/listings/:listing_id/edit', async (req, res) => {
     res.render('listing/edit.ejs', { listing });
 });
 
+// Save changes in edit listing
+app.put('/listings/:listing_id', async (req, res) => {
+    const { title, description, imageURL, price, location, country } = req.body;
+    const updated_listing = {
+        title: title,
+        description: description,
+        imageURL: imageURL,
+        price: price.replace(/,/g, ''),
+        location: location,
+        country: country
+    }
+    const listing = await Listing.findByIdAndUpdate(req.params.listing_id, updated_listing, { runValidators: true });
+    res.redirect('/listings');
+});
+
 // View details of listing
 app.get('/listings/:listing_id/view', async (req, res) => {
     const listing = await Listing.findById(req.params.listing_id);
