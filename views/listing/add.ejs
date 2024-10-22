@@ -8,7 +8,8 @@
             <form action="/listings/addnew" method="post">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input name="title" type="text" class="form-control" id="title" placeholder="Enter title here">
+                    <input name="title" type="text" class="form-control" id="title" placeholder="Enter title here"
+                        required>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
@@ -18,7 +19,7 @@
                 <div class="mb-3">
                     <label for="imageURL" class="form-label">Image Link</label>
                     <input name="imageURL" type="text" class="form-control" id="imageURL"
-                        placeholder="Enter image link here">
+                        placeholder="Enter image link here" required>
                 </div>
                 <div class="row">
                     <div class="mb-3 col-sm-12 col-md-6">
@@ -28,15 +29,15 @@
                     <div class="mb-3 col-sm-12 col-md-6">
                         <label for="country" class="form-label">Country</label>
                         <input name="country" type="text" class="form-control" id="country"
-                            placeholder="Enter country here">
+                            placeholder="Enter country here" required>
                     </div>
                 </div>
                 <div class="mb-3 ">
                     <label for="location" class="form-label">Location</label>
                     <input name="location" type="text" class="form-control" id="location"
-                        placeholder="Enter location here">
+                        placeholder="Enter location here" required>
                 </div>
-                <button type="submit" class="btn btn-primary"> <i class="fa-solid fa-floppy-disk"></i>  Submit</button>
+                <button type="submit" class="btn btn-primary"> <i class="fa-solid fa-floppy-disk"></i> Submit</button>
             </form>
         </div>
     </body>
