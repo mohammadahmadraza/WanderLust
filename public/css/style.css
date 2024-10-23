@@ -2,6 +2,10 @@ a {
     text-decoration: none;
 }
 
+* {
+    font-family: "Roboto Condensed", sans-serif;
+}
+
 /* homepage card */
 .card_image {
     height: 13rem;
@@ -24,9 +28,11 @@ a {
 .icon_container {
     width: auto;
 }
-.icon_container:hover{
+
+.icon_container:hover {
     cursor: pointer;
 }
+
 .footer_site_links {
     margin: 1.2rem 1.2rem;
 }
