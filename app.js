@@ -54,7 +54,7 @@ app.post('/listings/addnew', async (req, res) => {
         title: title,
         description: description,
         imageURL: imageURL,
-        price: price,
+        price: price ? price : 0,
         location: location,
         country: country
     });
@@ -75,7 +75,7 @@ app.put('/listings/:listing_id', async (req, res) => {
         title: title,
         description: description,
         imageURL: imageURL,
-        price: price.replace(/,/g, ''),
+        price: price ? price.replace(/,/g, ''): 0,
         location: location,
         country: country
     }
