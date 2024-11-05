@@ -6,6 +6,19 @@ a {
     font-family: "Roboto Condensed", sans-serif;
 }
 
+
+
+/* Navbar */
+.profile_pic {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(209, 211, 211);
+    border-radius: 50%;
+    text-align: center;
+    padding: 6px;
+    cursor: pointer;
+}
+
 /* homepage card */
 .card_image {
     height: 13rem;
