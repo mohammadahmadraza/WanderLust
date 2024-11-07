@@ -19,8 +19,20 @@
                 </li>
             </ul>
         </div>
-        <div class="profile_pic">
-            <i class="fa-regular fa-user fa-xl"></i>
+        <div class="profile_pic dropdown">
+
+            <i class="fa-regular fa-user fa-xl" id="dropdownMenu2" data-bs-toggle="dropdown"></i>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li> <i class="fa-regular fa-user"></i>
+                    <a class="dropdown-item" href="#"> My Profile</a>
+                </li>
+                <li> <i class="fa-solid fa-gear"></i>
+                    <a class="dropdown-item" href="#">Setting</a>
+                </li>
+                <li> <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <a class="dropdown-item" style="color: red;" href="#">Log Out</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
