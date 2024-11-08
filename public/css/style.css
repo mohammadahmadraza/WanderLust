@@ -26,6 +26,7 @@ a {
 
 .dropdown-menu li {
     padding: 0.5rem;
+    cursor: pointer;
 }
 
 
