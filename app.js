@@ -75,7 +75,7 @@ app.put('/listings/:listing_id', async (req, res) => {
         title: title,
         description: description,
         imageURL: imageURL,
-        price: price ? price.replace(/,/g, ''): 0,
+        price: price ? price.replace(/,/g, '') : 0,
         location: location,
         country: country
     }
@@ -98,6 +98,17 @@ app.delete('/listings/:listing_id', async (req, res) => {
             res.send('Cannot delete due to error', err);
         })
 
+})
+
+// To handle when user request for undefined routes
+app.all('*', (req, res) => {
+    res.send('Oops! Please correct your request path. There is nothing linked with this path.');
+})
+
+// Error handling middleware 
+app.use((err, req, res, next) => {
+    let { statusCode = 500, message = 'Something went wrong.' } = err;
+    res.status(statusCode).message(message);
 })
 
 
