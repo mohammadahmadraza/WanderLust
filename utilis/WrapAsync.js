@@ -1,6 +1,7 @@
-module.exports = WrapAsync = (fn) => {
-    new function (req, res, next) {
-
+WrapAsync = (fn) => {
+    return function (req, res, next) {
         fn(req, res, next).catch(next);
     }
 }
+
+module.exports = WrapAsync;

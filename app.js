@@ -5,6 +5,8 @@ const path = require('path');
 const Listing = require('./models/Listing');
 const methodoverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const WrapAsync = require('./utilis/WrapAsync.js');
+console.log('Type of ', typeof (WrapAsync));
 
 
 //URl to connect with wanderlust database
@@ -47,7 +49,7 @@ app.get('/listings/addnew', async (req, res) => {
 });
 
 // Save new listing data to database
-app.post('/listings/addnew', async (req, res) => {
+app.post('/listings/addnew', WrapAsync(async (req, res) => {
     let { title, description, imageURL, price, location, country } = req.body;
 
     const newListing = new Listing({
@@ -60,16 +62,16 @@ app.post('/listings/addnew', async (req, res) => {
     });
     await newListing.save();
     res.redirect('/listings');
-});
+}));
 
 // Form to edit listing
-app.get('/listings/:listing_id/edit', async (req, res) => {
+app.get('/listings/:listing_id/edit', WrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.listing_id);
     res.render('listing/edit.ejs', { listing });
-});
+}));
 
 // Save changes in edit listing
-app.put('/listings/:listing_id', async (req, res) => {
+app.put('/listings/:listing_id', WrapAsync(async (req, res) => {
     const { title, description, imageURL, price, location, country } = req.body;
     const updated_listing = {
         title: title,
@@ -81,16 +83,16 @@ app.put('/listings/:listing_id', async (req, res) => {
     }
     const listing = await Listing.findByIdAndUpdate(req.params.listing_id, updated_listing, { runValidators: true });
     res.redirect('/listings');
-});
+}));
 
 // View details of listing
-app.get('/listings/:listing_id/view', async (req, res) => {
+app.get('/listings/:listing_id/view', WrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.listing_id);
     res.render('listing/view.ejs', { listing });
-});
+}));
 
 // Delete listing from database
-app.delete('/listings/:listing_id', async (req, res) => {
+app.delete('/listings/:listing_id', WrapAsync(async (req, res) => {
 
     await Listing.findByIdAndDelete(req.params.listing_id)
         .then(() => res.redirect('/listings'))
@@ -98,17 +100,18 @@ app.delete('/listings/:listing_id', async (req, res) => {
             res.send('Cannot delete due to error', err);
         })
 
-})
+}));
 
 // To handle when user request for undefined routes
 app.all('*', (req, res) => {
-    res.send('Oops! Please correct your request path. There is nothing linked with this path.');
+    res.render('error.ejs');
+    // res.send('Oops! Please correct your request path. There is nothing linked with this path.');
 })
 
 // Error handling middleware 
 app.use((err, req, res, next) => {
     let { statusCode = 500, message = 'Something went wrong.' } = err;
-    res.status(statusCode).message(message);
+    res.status(statusCode).send(message);
 })
 
 
