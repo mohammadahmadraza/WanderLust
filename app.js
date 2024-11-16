@@ -3,12 +3,13 @@ const app = express();
 const mongoose = require('mongoose');
 const path = require('path');
 const Listing = require('./models/Listing');
+const Review = require('./models/Review.js');
 const methodoverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const WrapAsync = require('./utilis/WrapAsync.js');
 
 
-//URl to connect with wanderlust database
+//URL to connect with wanderlust database
 const MONGOOSEURL = 'mongodb://localhost:27017/wanderlust';
 
 //compulsory settings for the server
@@ -101,9 +102,25 @@ app.delete('/listings/:listing_id', WrapAsync(async (req, res) => {
 
 }));
 
+
+
+// Reviews End points
+app.post('/listings/:listing_id/review', async (req, res) => {
+    let listing = await Listing.findById(req.params.listing_id);
+    let newReview = new Review(req.body.review);
+
+    listing.reviews.push(newReview);
+
+    await newReview.save();
+    await listing.save();
+
+    res.redirect(`/listings/${req.params.listing_id}/view`);
+});
+
 // To handle when user request for undefined routes
 app.all('*', (req, res) => {
-    res.send('Oops! Please correct your request path. There is nothing linked with this path.');
+    res.render('error.ejs');
+    // res.send('Oops! Please correct your request path. There is nothing linked with this path.');
 })
 
 // Error handling middleware 

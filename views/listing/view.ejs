@@ -2,7 +2,8 @@
 
     <body>
         <a href="/listings" class="btn btn-secondary btn-sm mt-3"> <i class="fa-solid fa-arrow-left"></i> Back</a>
-        <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary btn-sm mt-3"> <i class="fa-solid fa-pen-to-square"></i>  Edit</a>
+        <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary btn-sm mt-3"> <i
+                class="fa-solid fa-pen-to-square"></i> Edit</a>
         <div class="card mt-3 w-75 border border-0">
             <h5 class="card-title">
                 <%= listing.title%>
@@ -20,5 +21,24 @@
                         <%= listing.country %>
                 </p>
             </div>
+        </div>
+
+        <hr>
+        <div>
+            <h3>Leave a review</h3>
+            <form action="/listings/<%= listing._id %>/review" method="post">
+                <div class=" w-50">
+                    <label for="rating" class="form-label">Rating</label>
+                    <input type="range" class="form-range" id="rating" min="1" max="5" name="review[rating]">
+                </div>
+
+                <div class="w-50 mb-3">
+                    <label for="comment" class="form-label">Comment</label>
+                    <textarea class="form-control" id="comment" name="review[comment]" row="10" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-floppy-disk"></i> Submit</button>
+            </form>
         </div>
     </body>
