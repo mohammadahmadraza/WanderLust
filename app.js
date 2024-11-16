@@ -87,7 +87,7 @@ app.put('/listings/:listing_id', WrapAsync(async (req, res) => {
 
 // View details of listing
 app.get('/listings/:listing_id/view', WrapAsync(async (req, res) => {
-    const listing = await Listing.findById(req.params.listing_id);
+    const listing = await Listing.findById(req.params.listing_id).populate('reviews');
     res.render('listing/view.ejs', { listing });
 }));
 
@@ -103,7 +103,6 @@ app.delete('/listings/:listing_id', WrapAsync(async (req, res) => {
 }));
 
 
-
 // Reviews End points
 app.post('/listings/:listing_id/review', async (req, res) => {
     let listing = await Listing.findById(req.params.listing_id);
@@ -117,26 +116,43 @@ app.post('/listings/:listing_id/review', async (req, res) => {
     res.redirect(`/listings/${req.params.listing_id}/view`);
 });
 
+//Delete review from listing
+app.delete('/listings/:listing_id/view/review/:review_id', WrapAsync(async (req, res) => {
+    let { listing_id, review_id } = req.params;
+    await Listing.findByIdAndUpdate(listing_id, { $pull: { reviews: review_id } });
+    await Review.findByIdAndDelete(review_id);
+
+    res.redirect(`/listings/${listing_id}/view`);
+}));
+
+
+
+
+
+
+
+
+
+
+
 // To handle when user request for undefined routes
 app.all('*', (req, res) => {
     res.render('error.ejs');
     // res.send('Oops! Please correct your request path. There is nothing linked with this path.');
-})
+});
 
 // Error handling middleware 
 app.use((err, req, res, next) => {
     let { statusCode = 500, message = 'Something went wrong.' } = err;
     res.status(statusCode).send(message);
-})
-
-
+});
 
 
 
 app.listen(8000, () => {
     console.log('Server is running on port 8000.');
 
-})
+});
 
 
 

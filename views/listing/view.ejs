@@ -34,11 +34,32 @@
 
                 <div class="w-50 mb-3">
                     <label for="comment" class="form-label">Comment</label>
-                    <textarea class="form-control" id="comment" name="review[comment]" row="10" required></textarea>
+                    <textarea class="form-control" id="comment" name="review[comment]" row="10" required
+                        placeholder="Write your comment here"></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-sm">
                     <i class="fa-solid fa-floppy-disk"></i> Submit</button>
             </form>
+        </div>
+
+        <hr>
+        <h3>All Reviews</h3>
+        <div class="row">
+            <% for (review of listing.reviews) { %>
+                <div class="card col-5 ms-2 mb-3">
+                    <%= review.rating %> Star
+                        <p class="card-text"> </p>
+                        <p class="card-text">
+                            <%= review.comment %>
+                        </p>
+
+
+                        <form action="/listings/<%= listing._id %>/view/review/<%= review._id %>?_method=DELETE"
+                            method="post">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                </div>
+                <% } %>
         </div>
     </body>
