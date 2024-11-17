@@ -7,7 +7,8 @@ const Review = require('./models/Review.js');
 const methodoverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const WrapAsync = require('./utilis/WrapAsync.js');
-
+const { listingSchema, reviewSchema } = require('./schema.js');
+const ExpressError = require('./utilis/ExpressError.js');
 
 //URL to connect with wanderlust database
 const MONGOOSEURL = 'mongodb://localhost:27017/wanderlust';
@@ -19,6 +20,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodoverride('_method'));
 app.engine('ejs', ejsMate);
+
+
+
+// Middleware function for schema validation
+
+function listingValidation(req, res, next) {
+
+    let { error } = listingSchema.validate(req.body);
+    console.log('Listing Validation Error', error);
+    if (error) {
+        throw new ExpressError(400, 'Please send valid listing data.');
+    }
+    else {
+        next();
+
+    }
+
+}
 
 
 // function to connect with database and function call
@@ -49,7 +68,7 @@ app.get('/listings/addnew', async (req, res) => {
 });
 
 // Save new listing data to database
-app.post('/listings/addnew', WrapAsync(async (req, res) => {
+app.post('/listings/addnew', listingValidation, WrapAsync(async (req, res) => {
     let { title, description, imageURL, price, location, country } = req.body;
 
     const newListing = new Listing({
@@ -71,7 +90,7 @@ app.get('/listings/:listing_id/edit', WrapAsync(async (req, res) => {
 }));
 
 // Save changes in edit listing
-app.put('/listings/:listing_id', WrapAsync(async (req, res) => {
+app.put('/listings/:listing_id', listingValidation, WrapAsync(async (req, res) => {
     const { title, description, imageURL, price, location, country } = req.body;
     const updated_listing = {
         title: title,
