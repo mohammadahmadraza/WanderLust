@@ -47,18 +47,18 @@
         <h3>All Reviews</h3>
         <div class="row">
             <% for (review of listing.reviews) { %>
-                <div class="card col-5 ms-2 mb-3">
-                    <%= review.rating %> Star
-                        <p class="card-text"> </p>
-                        <p class="card-text">
-                            <%= review.comment %>
-                        </p>
+                <div class="card col-5 ms-2 mb-3 p-2 shadow-card" style="max-height: 200px;">
 
-
-                        <form action="/listings/<%= listing._id %>/view/review/<%= review._id %>?_method=DELETE"
-                            method="post">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
+                    <h5 class="card-text">
+                        <%= review.rating %> Star
+                    </h5>
+                    <p class="card-text" style="max-height: 80px;" >
+                        <%= review.comment %>
+                    </p>
+                    <form action="/listings/<%= listing._id %>/view/review/<%= review._id %>?_method=DELETE"
+                        method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                 </div>
                 <% } %>
         </div>
