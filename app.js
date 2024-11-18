@@ -9,6 +9,8 @@ const ejsMate = require('ejs-mate');
 const WrapAsync = require('./utilis/WrapAsync.js');
 const { listingSchema, reviewSchema } = require('./schema.js');
 const ExpressError = require('./utilis/ExpressError.js');
+const listingRoutes = require('./routes/listingRoutes.js');
+
 
 //URL to connect with wanderlust database
 const MONGOOSEURL = 'mongodb://localhost:27017/wanderlust';
@@ -49,6 +51,8 @@ main().then(res => console.log('Connected to database successfully.'))
     .catch(err => console.log('Error Occured.', err));
 
 
+app.use('/listings', listingRoutes);
+
 // Show all listing route
 app.get('/listings', async (req, res) => {
     const listings = await Listing.find();
@@ -62,10 +66,10 @@ app.get('/', WrapAsync(async (req, res) => {
 
 
 // Form to add new listing
-app.get('/listings/addnew', async (req, res) => {
-    // const listings = await Listing.find();
-    res.render('listing/add.ejs');
-});
+// app.get('/listings/addnew', (req, res) => {
+
+//     res.render('listing/add.ejs');
+// });
 
 // Save new listing data to database
 app.post('/listings/addnew', listingValidation, WrapAsync(async (req, res) => {
@@ -84,10 +88,10 @@ app.post('/listings/addnew', listingValidation, WrapAsync(async (req, res) => {
 }));
 
 // Form to edit listing
-app.get('/listings/:listing_id/edit', WrapAsync(async (req, res) => {
-    const listing = await Listing.findById(req.params.listing_id);
-    res.render('listing/edit.ejs', { listing });
-}));
+// app.get('/listings/:listing_id/edit', WrapAsync(async (req, res) => {
+//     const listing = await Listing.findById(req.params.listing_id);
+//     res.render('listing/edit.ejs', { listing });
+// }));
 
 // Save changes in edit listing
 app.put('/listings/:listing_id', listingValidation, WrapAsync(async (req, res) => {
