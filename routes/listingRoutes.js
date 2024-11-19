@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 const Listing = require('../models/Listing');
 const WrapAsync = require('../utilis/WrapAsync');
 const ExpressError = require('../utilis/ExpressError');
-const {listingSchema} = require('../')
+const {listingSchema} = require('../schema')
 
 
 // Middleware function for schema validation
@@ -11,8 +11,8 @@ const {listingSchema} = require('../')
 function listingValidation(req, res, next) {
 
     let { error } = listingSchema.validate(req.body);
-    console.log('Listing Validation Error', error);
     if (error) {
+    console.log('Listing Validation Error', error);
         throw new ExpressError(400, 'Please send valid listing data.');
     }
     else {
@@ -46,7 +46,7 @@ router.post('/addnew', listingValidation, WrapAsync(async (req, res) => {
         country: country
     });
     await newListing.save();
-    res.redirect('/');
+    res.redirect('/listings');
 }));
 
 // Form to edit listing
@@ -67,7 +67,7 @@ router.put('/:listing_id', listingValidation, WrapAsync(async (req, res) => {
         country: country
     }
     const listing = await Listing.findByIdAndUpdate(req.params.listing_id, updated_listing, { runValidators: true });
-    res.redirect('/');
+    res.redirect('/listings');
 }));
 
 // View details of listing
