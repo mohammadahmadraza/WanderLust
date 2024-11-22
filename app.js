@@ -4,12 +4,15 @@ const mongoose = require('mongoose');
 const path = require('path');
 const methodoverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const {listingRoutes, reviewRoutes} = require('./routes/index.js');
+const session = require('express-session');
+const cookies = require('cookies-parser');
+const flash = require('connect-flash');
+const { listingRoutes, reviewRoutes } = require('./routes/index.js');
 
 //URL to connect with wanderlust database
 const MONGOOSEURL = 'mongodb://localhost:27017/wanderlust';
 
-//compulsory settings for the server
+//Mandatory settings for the server
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
@@ -17,8 +20,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodoverride('_method'));
 app.engine('ejs', ejsMate);
 
+//
 
-// function to connect with database and function call
+// Function to connect with database
 const main = async () => {
     await mongoose.connect(MONGOOSEURL);
 }
@@ -26,11 +30,16 @@ const main = async () => {
 main().then(res => console.log('Connected to database successfully.'))
     .catch(err => console.log('Error Occured.', err));
 
+//Middleware to set session ID for User
+app.use(session({ secret: 'wanderlustapp', 
+    resave: false, 
+    saveUninitialized: true }));
+
 // For Listing routes
 app.use('/listings', listingRoutes);
+
 //For Review Routes
 app.use('/listings/:listing_id', reviewRoutes);
-
 
 // To handle when user request for undefined routes
 app.all('*', (req, res) => {
@@ -43,8 +52,6 @@ app.use((err, req, res, next) => {
     res.status(statusCode).send(message);
 });
 
-
 app.listen(8000, () => {
     console.log('Server is running on port 8000.');
-
 });
