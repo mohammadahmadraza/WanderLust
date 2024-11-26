@@ -28,12 +28,30 @@ const main = async () => {
 }
 
 main().then(res => console.log('Connected to database successfully.'))
-    .catch(err => console.log('Error Occured.', err));
+    .catch(err => console.log('Error Occured While connectiing to database.'));
 
+
+//Cookies option
+const cookiesOption = {
+    secret: 'wanderlustapp',
+    resave: false,
+    saveUninitialized: true,
+    cookies: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true
+    }
+}
 //Middleware to set session ID for User
-app.use(session({ secret: 'wanderlustapp', 
-    resave: false, 
-    saveUninitialized: true }));
+app.use(session(cookiesOption));
+
+//Middleware for flash messages
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.info = req.flash('info');
+    next();
+});
 
 // For Listing routes
 app.use('/listings', listingRoutes);

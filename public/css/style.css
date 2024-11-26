@@ -52,7 +52,50 @@ a {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
+/* Alert messages */
+@keyframes alert_messages_animation {
+    0% {
+        transform: translateY(0px);
+    }
 
+    50% {
+        transform: translateY(65px);
+    }
+
+    65% {
+        transform: translateY(65px);
+    }
+
+    75% {
+        transform: translateY(-25px);
+    }
+
+    85% {
+        transform: translateY(-40px);
+
+    }
+
+    100% {
+        transform: translateY(0px);
+        display: none;
+    }
+}
+
+
+
+.alert_messages {
+    position: absolute;
+    top: 0px;
+    right: 100px;
+    padding: 5px;
+    animation-name: alert_messages_animation;
+    animation-duration: 4s;
+    animation-timing-function: ease-in-out;
+}
+
+.alert_message_btn {
+    padding-top: 1px !important;
+}
 
 /* footer icon */
 

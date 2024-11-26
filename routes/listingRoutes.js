@@ -3,7 +3,8 @@ const router = express.Router({ mergeParams: true });
 const Listing = require('../models/Listing');
 const WrapAsync = require('../utilis/WrapAsync');
 const ExpressError = require('../utilis/ExpressError');
-const {listingSchema} = require('../schema')
+const { listingSchema } = require('../schema');
+// const flash = require('connect-flash');
 
 
 // Middleware function for schema validation
@@ -12,14 +13,13 @@ function listingValidation(req, res, next) {
 
     let { error } = listingSchema.validate(req.body);
     if (error) {
-    console.log('Listing Validation Error', error);
+        console.log('Listing Validation Error', error);
         throw new ExpressError(400, 'Please send valid listing data.');
     }
     else {
         next();
 
     }
-
 }
 
 // Show all listing route
@@ -46,6 +46,7 @@ router.post('/addnew', listingValidation, WrapAsync(async (req, res) => {
         country: country
     });
     await newListing.save();
+    req.flash('success', 'Listing has been added successfully.');
     res.redirect('/listings');
 }));
 
@@ -67,6 +68,7 @@ router.put('/:listing_id', listingValidation, WrapAsync(async (req, res) => {
         country: country
     }
     const listing = await Listing.findByIdAndUpdate(req.params.listing_id, updated_listing, { runValidators: true });
+    req.flash('success', 'Listing has been updated successfully.');
     res.redirect('/listings');
 }));
 
@@ -80,7 +82,10 @@ router.get('/:listing_id/view', WrapAsync(async (req, res) => {
 router.delete('/:listing_id', WrapAsync(async (req, res) => {
 
     await Listing.findByIdAndDelete(req.params.listing_id)
-        .then(() => res.redirect('/listings'))
+        .then(() => {
+            req.flash('success', 'Listing has been deleted successfully.');
+            res.redirect('/listings');
+        })
         .catch((err) => {
             res.send('Cannot delete due to error', err);
         })
