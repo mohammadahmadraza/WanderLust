@@ -7,6 +7,8 @@ const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const cookies = require('cookies-parser');
 const flash = require('connect-flash');
+const passport = require('passport');
+const User = require('./models/User.js');
 const { listingRoutes, reviewRoutes } = require('./routes/index.js');
 
 //URL to connect with wanderlust database
@@ -42,16 +44,21 @@ const cookiesOption = {
         httpOnly: true
     }
 }
-//Middleware to set session ID for User
+//Middleware to set session ID for User & for flash messages
 app.use(session(cookiesOption));
-
-//Middleware for flash messages
 app.use(flash());
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.info = req.flash('info');
     next();
 });
+// Configutation for passport authentication
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // For Listing routes
 app.use('/listings', listingRoutes);
