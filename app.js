@@ -8,6 +8,7 @@ const session = require('express-session');
 const cookies = require('cookies-parser');
 const flash = require('connect-flash');
 const passport = require('passport');
+const LocalStrategy = require('passport-local');
 const User = require('./models/User.js');
 const { listingRoutes, reviewRoutes } = require('./routes/index.js');
 
@@ -59,6 +60,25 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.get('/signup', (req, res) => {
+    res.render('user/signup.ejs');
+});
+
+app.post('/signup', async (req, res) => {
+    let { fullname, email, username, password } = req.body;
+    // console.log('Sign up data', req.body);
+    const newUser = {
+        fullname : fullname,
+        email : email,
+        username : username
+    };
+    const newUser1 = new User(newUser);
+
+    await User.register(newUser1, req.body.password);
+    // res.render('user/signup.ejs');
+    res.send('Sign up successfully.');
+});
 
 // For Listing routes
 app.use('/listings', listingRoutes);
