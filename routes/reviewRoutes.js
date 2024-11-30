@@ -4,9 +4,7 @@ const Listing = require('../models/Listing');
 const Review = require('../models/Review');
 const WrapAsync = require('../utilis/WrapAsync');
 
-
-
-// Reviews End points
+// Reviews End points 
 // Save new review
 router.post('/review', WrapAsync(async (req, res) => {
     let listing = await Listing.findById(req.params.listing_id);
@@ -15,7 +13,6 @@ router.post('/review', WrapAsync(async (req, res) => {
     await newReview.save();
     await listing.save();
     req.flash('success', 'Review has been added successfully.');
-
     res.redirect(`/listings/${req.params.listing_id}/view`);
 }));
 
