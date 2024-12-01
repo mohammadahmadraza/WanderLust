@@ -10,7 +10,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/User.js');
-const { listingRoutes, reviewRoutes } = require('./routes/index.js');
+const { listingRoutes, reviewRoutes, userRoutes } = require('./routes/index.js');
 
 //URL to connect with wanderlust database
 const MONGOOSEURL = 'mongodb://localhost:27017/wanderlust';
@@ -23,8 +23,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodoverride('_method'));
 app.engine('ejs', ejsMate);
 
-//
-
 // Function to connect with database
 const main = async () => {
     await mongoose.connect(MONGOOSEURL);
@@ -32,7 +30,6 @@ const main = async () => {
 
 main().then(res => console.log('Connected to database successfully.'))
     .catch(err => console.log('Error Occured While connectiing to database.'));
-
 
 //Cookies option
 const cookiesOption = {
@@ -51,6 +48,7 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.info = req.flash('info');
+    res.locals.error = req.flash('error');
     next();
 });
 // Configutation for passport authentication
@@ -61,30 +59,14 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.get('/signup', (req, res) => {
-    res.render('user/signup.ejs');
-});
-
-app.post('/signup', async (req, res) => {
-    let { fullname, email, username, password } = req.body;
-    // console.log('Sign up data', req.body);
-    const newUser = {
-        fullname : fullname,
-        email : email,
-        username : username
-    };
-    const newUser1 = new User(newUser);
-
-    await User.register(newUser1, req.body.password);
-    // res.render('user/signup.ejs');
-    res.send('Sign up successfully.');
-});
-
 // For Listing routes
 app.use('/listings', listingRoutes);
 
 //For Review Routes
 app.use('/listings/:listing_id', reviewRoutes);
+
+//For User Routes
+app.use('/', userRoutes);
 
 // To handle when user request for undefined routes
 app.all('*', (req, res) => {

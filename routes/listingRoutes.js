@@ -5,6 +5,8 @@ const WrapAsync = require('../utilis/WrapAsync');
 const ExpressError = require('../utilis/ExpressError');
 const { listingSchema } = require('../schema');
 // const flash = require('connect-flash');
+const isUserLoggedIn = require('../middleware');
+
 
 
 // Middleware function for schema validation
@@ -29,12 +31,12 @@ router.get('/', async (req, res) => {
 });
 
 // Form to add new listing
-router.get('/addnew', (req, res) => {
+router.get('/addnew', isUserLoggedIn, (req, res) => {
     res.render('listing/add.ejs');
 });
 
 // Save new listing data to database
-router.post('/addnew', listingValidation, WrapAsync(async (req, res) => {
+router.post('/addnew', listingValidation, isUserLoggedIn, WrapAsync(async (req, res) => {
     let { title, description, imageURL, price, location, country } = req.body;
 
     const newListing = new Listing({
@@ -51,13 +53,13 @@ router.post('/addnew', listingValidation, WrapAsync(async (req, res) => {
 }));
 
 // Form to edit listing
-router.get('/:listing_id/edit', WrapAsync(async (req, res) => {
+router.get('/:listing_id/edit', isUserLoggedIn, WrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.listing_id);
     res.render('listing/edit.ejs', { listing });
 }));
 
 // Save changes in edit listing
-router.put('/:listing_id', listingValidation, WrapAsync(async (req, res) => {
+router.put('/:listing_id', listingValidation, isUserLoggedIn, WrapAsync(async (req, res) => {
     const { title, description, imageURL, price, location, country } = req.body;
     const updated_listing = {
         title: title,
@@ -79,7 +81,7 @@ router.get('/:listing_id/view', WrapAsync(async (req, res) => {
 }));
 
 // Delete listing from database
-router.delete('/:listing_id', WrapAsync(async (req, res) => {
+router.delete('/:listing_id', isUserLoggedIn, WrapAsync(async (req, res) => {
 
     await Listing.findByIdAndDelete(req.params.listing_id)
         .then(() => {

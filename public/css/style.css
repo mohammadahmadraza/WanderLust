@@ -87,8 +87,8 @@ a {
     right: 100px;
     padding: 5px;
     animation-name: alert_messages_animation;
-    animation-duration: 4s;
-    animation-timing-function: ease-in-out;
+    animation-duration: 7s;
+    animation-timing-function: ease-out;
 }
 
 .alert_message_btn {
