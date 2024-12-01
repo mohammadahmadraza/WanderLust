@@ -27,7 +27,8 @@ router.get('/login', (req, res) => {
 router.post('/login',
     passport.authenticate('local', { failureRedirect: '/login', failureFlash: true, failureMessage: 'Username or password is not correct.' }),
     async (req, res) => {
-        console.log('authentication done.');
+        // console.log('authentication done.');
+        console.log('user', req.user);
         req.flash('success', 'User has been logged in successfully.');
         res.redirect('/listings');
     });

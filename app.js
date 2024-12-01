@@ -45,12 +45,7 @@ const cookiesOption = {
 //Middleware to set session ID for User & for flash messages
 app.use(session(cookiesOption));
 app.use(flash());
-app.use((req, res, next) => {
-    res.locals.success = req.flash('success');
-    res.locals.info = req.flash('info');
-    res.locals.error = req.flash('error');
-    next();
-});
+
 // Configutation for passport authentication
 app.use(passport.initialize());
 app.use(passport.session());
@@ -58,6 +53,16 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+//Middleware for handling flash messages
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.info = req.flash('info');
+    res.locals.error = req.flash('error');
+    res.locals.currUser = req.user;
+    // console.log('req user', req.user);
+    next();
+});
 
 // For Listing routes
 app.use('/listings', listingRoutes);
