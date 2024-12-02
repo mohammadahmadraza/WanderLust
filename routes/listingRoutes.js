@@ -5,7 +5,7 @@ const WrapAsync = require('../utilis/WrapAsync');
 const ExpressError = require('../utilis/ExpressError');
 const { listingSchema } = require('../schema');
 // const flash = require('connect-flash');
-const isUserLoggedIn = require('../middleware');
+const {isUserLoggedIn} = require('../middleware');
 
 
 

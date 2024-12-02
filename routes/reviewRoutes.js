@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 const Listing = require('../models/Listing');
 const Review = require('../models/Review');
 const WrapAsync = require('../utilis/WrapAsync');
-const isUserLoggedIn = require('../middleware');
+const { isUserLoggedIn } = require('../middleware');
 
 // Reviews End points 
 // Save new review

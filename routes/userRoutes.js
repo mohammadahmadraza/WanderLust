@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const WrapAsync = require('../utilis/WrapAsync');
 const passport = require('passport');
+const { saveRedirectURL } = require('../middleware');
 
 // Form for user sign up
 router.get('/signup', (req, res) => {
@@ -13,9 +14,16 @@ router.get('/signup', (req, res) => {
 router.post('/signup', WrapAsync(async (req, res) => {
     const { fullname, username, email, password } = req.body;
     const newUser = new User({ fullname, username, email });
-    await User.register(newUser, password);
-    req.flash('success', 'User has been registered successfully.');
-    res.redirect('/listings');
+    const registeredUser = await User.register(newUser, password);
+    req.login(registeredUser, (err) => {
+        if (err) {
+            next(err);
+        }
+        req.flash('success', 'Welcome to wanderlust!');
+        res.redirect('/listings');
+    })
+    // req.flash('success', 'User has been registered successfully.');
+    // res.redirect('/listings');
 }));
 
 // Form for user sign up
@@ -25,12 +33,14 @@ router.get('/login', (req, res) => {
 
 // Authenticate user for login
 router.post('/login',
+    saveRedirectURL,
     passport.authenticate('local', { failureRedirect: '/login', failureFlash: true, failureMessage: 'Username or password is not correct.' }),
-    async (req, res) => {
-        // console.log('authentication done.');
-        console.log('user', req.user);
+    (req, res) => {
+        // console.log('session after authentication', req.session);
+        // console.log('res.locals.redirectURL ', res.locals.redirectURL);
+        let returnTO = res.locals.redirectURL || '/listings';
         req.flash('success', 'User has been logged in successfully.');
-        res.redirect('/listings');
+        res.redirect(returnTO);
     });
 
 // Logout User
