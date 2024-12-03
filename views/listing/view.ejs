@@ -10,6 +10,10 @@
             </h5>
             <img src="<%= listing.imageURL%>" class="card-img-top rounded" style="height: 450px;" alt="listing_image">
             <div class="card-body">
+
+                <p class="card-text">
+                    Created By : <%= listing.created_by.fullname %>
+                </p>
                 <p class="card-text">
                     <%= listing.description %>
                 </p>
@@ -52,7 +56,7 @@
                     <h5 class="card-text">
                         <%= review.rating %> Star
                     </h5>
-                    <p class="card-text" style="max-height: 80px;" >
+                    <p class="card-text" style="max-height: 80px;">
                         <%= review.comment %>
                     </p>
                     <form action="/listings/<%= listing._id %>/view/review/<%= review._id %>?_method=DELETE"

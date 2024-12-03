@@ -5,7 +5,7 @@ const WrapAsync = require('../utilis/WrapAsync');
 const ExpressError = require('../utilis/ExpressError');
 const { listingSchema } = require('../schema');
 // const flash = require('connect-flash');
-const {isUserLoggedIn} = require('../middleware');
+const { isUserLoggedIn } = require('../middleware');
 
 
 
@@ -76,7 +76,7 @@ router.put('/:listing_id', listingValidation, isUserLoggedIn, WrapAsync(async (r
 
 // View details of listing
 router.get('/:listing_id/view', WrapAsync(async (req, res) => {
-    const listing = await Listing.findById(req.params.listing_id).populate('reviews');
+    const listing = await Listing.findById(req.params.listing_id).populate('reviews').populate('created_by');
     res.render('listing/view.ejs', { listing });
 }));
 
