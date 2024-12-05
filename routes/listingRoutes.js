@@ -5,7 +5,7 @@ const WrapAsync = require('../utilis/WrapAsync');
 const ExpressError = require('../utilis/ExpressError');
 const { listingSchema } = require('../schema');
 // const flash = require('connect-flash');
-const { isUserLoggedIn } = require('../middleware');
+const { isUserLoggedIn, isOwner } = require('../middleware');
 
 
 
@@ -53,13 +53,13 @@ router.post('/addnew', listingValidation, isUserLoggedIn, WrapAsync(async (req, 
 }));
 
 // Form to edit listing
-router.get('/:listing_id/edit', isUserLoggedIn, WrapAsync(async (req, res) => {
+router.get('/:listing_id/edit', isUserLoggedIn, isOwner, WrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.listing_id);
     res.render('listing/edit.ejs', { listing });
 }));
 
 // Save changes in edit listing
-router.put('/:listing_id', listingValidation, isUserLoggedIn, WrapAsync(async (req, res) => {
+router.put('/:listing_id', listingValidation, isUserLoggedIn, isOwner, WrapAsync(async (req, res) => {
     const { title, description, imageURL, price, location, country } = req.body;
     const updated_listing = {
         title: title,
@@ -81,7 +81,7 @@ router.get('/:listing_id/view', WrapAsync(async (req, res) => {
 }));
 
 // Delete listing from database
-router.delete('/:listing_id', isUserLoggedIn, WrapAsync(async (req, res) => {
+router.delete('/:listing_id', isUserLoggedIn, isOwner, WrapAsync(async (req, res) => {
 
     await Listing.findByIdAndDelete(req.params.listing_id)
         .then(() => {
