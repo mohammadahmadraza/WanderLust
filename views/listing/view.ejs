@@ -27,43 +27,48 @@
             </div>
         </div>
 
-        <hr>
-        <div>
-            <h3>Leave a review</h3>
-            <form action="/listings/<%= listing._id %>/review" method="post">
-                <div class=" w-50">
-                    <label for="rating" class="form-label">Rating</label>
-                    <input type="range" class="form-range" id="rating" min="1" max="5" name="review[rating]">
+        <% if (currUser) { %>
+
+
+            <hr>
+            <div>
+                <h3>Leave a review</h3>
+                <form action="/listings/<%= listing._id %>/review" method="post">
+                    <div class=" w-50">
+                        <label for="rating" class="form-label">Rating</label>
+                        <input type="range" class="form-range" id="rating" min="1" max="5" name="review[rating]">
+                    </div>
+
+                    <div class="w-50 mb-3">
+                        <label for="comment" class="form-label">Review</label>
+                        <textarea class="form-control" id="comment" name="review[comment]" row="10" required
+                            placeholder="Write your review here"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-floppy-disk"></i> Submit</button>
+                </form>
+            </div>
+            <% } %>
+                <hr>
+                <h3>All Reviews</h3>
+                <div class="row">
+                    <% for (review of listing.reviews) { %>
+                        <div class="card col-5 ms-2 mb-3 p-2 shadow-card" style="max-height: 200px;">
+                            <h6 class="card-text">
+                                Review By : <%= review.username %>
+                            </h6>
+                            <h5 class="card-text">
+                                <%= review.rating %> Star
+                            </h5>
+                            <p class="card-text" style="max-height: 80px;">
+                                <%= review.comment %>
+                            </p>
+                            <form action="/listings/<%= listing._id %>/view/review/<%= review._id %>?_method=DELETE"
+                                method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                        <% } %>
                 </div>
-
-                <div class="w-50 mb-3">
-                    <label for="comment" class="form-label">Review</label>
-                    <textarea class="form-control" id="comment" name="review[comment]" row="10" required
-                        placeholder="Write your review here"></textarea>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-sm">
-                    <i class="fa-solid fa-floppy-disk"></i> Submit</button>
-            </form>
-        </div>
-
-        <hr>
-        <h3>All Reviews</h3>
-        <div class="row">
-            <% for (review of listing.reviews) { %>
-                <div class="card col-5 ms-2 mb-3 p-2 shadow-card" style="max-height: 200px;">
-
-                    <h5 class="card-text">
-                        <%= review.rating %> Star
-                    </h5>
-                    <p class="card-text" style="max-height: 80px;">
-                        <%= review.comment %>
-                    </p>
-                    <form action="/listings/<%= listing._id %>/view/review/<%= review._id %>?_method=DELETE"
-                        method="post">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </div>
-                <% } %>
-        </div>
     </body>

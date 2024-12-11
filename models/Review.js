@@ -1,3 +1,4 @@
+const { ref, required } = require("joi");
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
@@ -8,9 +9,14 @@ const reviewSchema = new Schema({
         max: 5
     },
     comment: String,
-    createdAt : {
-        type : Date,
-        default : Date.now()
+    createdAt: {
+        type: Date,
+        default: Date.now()
+    },
+    created_by: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 });
 

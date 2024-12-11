@@ -76,7 +76,12 @@ router.put('/:listing_id', listingValidation, isUserLoggedIn, isOwner, WrapAsync
 
 // View details of listing
 router.get('/:listing_id/view', WrapAsync(async (req, res) => {
-    const listing = await Listing.findById(req.params.listing_id).populate('reviews').populate('created_by');
+    const listing = await Listing.findById(req.params.listing_id).populate({
+        path: 'reviews',
+        populate: {
+            path: 'created_by'
+        }
+    }).populate('created_by');
     res.render('listing/view.ejs', { listing });
 }));
 
