@@ -56,7 +56,9 @@
                     <% for (review of listing.reviews) { %>
                         <div class="card col-5 ms-2 mb-3 p-2 shadow-card" style="max-height: 200px;">
                             <h6 class="card-text">
-                                Review By : <%= review.username %>
+                                <!-- Review By : <% if(review) { %> -->
+                                @<%=review.reviewed_by.username %>
+                                        <!-- <% }%> -->
                             </h6>
                             <h5 class="card-text">
                                 <%= review.rating %> Star

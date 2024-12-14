@@ -13,7 +13,7 @@ const reviewSchema = new Schema({
         type: Date,
         default: Date.now()
     },
-    created_by: {
+    reviewed_by: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true

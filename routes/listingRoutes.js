@@ -5,8 +5,7 @@ const WrapAsync = require('../utilis/WrapAsync');
 const ExpressError = require('../utilis/ExpressError');
 const { listingSchema } = require('../schema');
 // const flash = require('connect-flash');
-const { isUserLoggedIn, isOwner } = require('../middleware');
-
+const { isUserLoggedIn, isListingOwner } = require('../middleware');
 
 
 // Middleware function for schema validation
@@ -53,13 +52,13 @@ router.post('/addnew', listingValidation, isUserLoggedIn, WrapAsync(async (req, 
 }));
 
 // Form to edit listing
-router.get('/:listing_id/edit', isUserLoggedIn, isOwner, WrapAsync(async (req, res) => {
+router.get('/:listing_id/edit', isUserLoggedIn, isListingOwner, WrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.listing_id);
     res.render('listing/edit.ejs', { listing });
 }));
 
 // Save changes in edit listing
-router.put('/:listing_id', listingValidation, isUserLoggedIn, isOwner, WrapAsync(async (req, res) => {
+router.put('/:listing_id', listingValidation, isUserLoggedIn, isListingOwner, WrapAsync(async (req, res) => {
     const { title, description, imageURL, price, location, country } = req.body;
     const updated_listing = {
         title: title,
@@ -79,14 +78,15 @@ router.get('/:listing_id/view', WrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.listing_id).populate({
         path: 'reviews',
         populate: {
-            path: 'created_by'
+            path: 'reviewed_by'
         }
     }).populate('created_by');
+    // console.log('listing detail : ', listing.reviews[0].reviewed_by.username);
     res.render('listing/view.ejs', { listing });
 }));
 
 // Delete listing from database
-router.delete('/:listing_id', isUserLoggedIn, isOwner, WrapAsync(async (req, res) => {
+router.delete('/:listing_id', isUserLoggedIn, isListingOwner, WrapAsync(async (req, res) => {
 
     await Listing.findByIdAndDelete(req.params.listing_id)
         .then(() => {
