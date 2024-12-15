@@ -4,9 +4,9 @@ const Listing = require('../models/Listing');
 const WrapAsync = require('../utilis/WrapAsync');
 const ExpressError = require('../utilis/ExpressError');
 const { listingSchema } = require('../schema');
-// const flash = require('connect-flash');
 const { isUserLoggedIn, isListingOwner } = require('../middleware');
-
+const { showAllListingsController, addNewListingFormController, addNewListingController,
+    editListingFormController, editListingController, deleteListingController, viewListingDetailsController } = require('../controllers/listingController');
 
 // Middleware function for schema validation
 
@@ -24,82 +24,25 @@ function listingValidation(req, res, next) {
 }
 
 // Show all listing route
-router.get('/', async (req, res) => {
-    const listings = await Listing.find();
-    res.render('listing/show.ejs', { listings });
-});
+router.get('/', showAllListingsController);
 
 // Form to add new listing
-router.get('/addnew', isUserLoggedIn, (req, res) => {
-    res.render('listing/add.ejs');
-});
+router.get('/addnew', isUserLoggedIn, addNewListingFormController);
 
 // Save new listing data to database
-router.post('/addnew', listingValidation, isUserLoggedIn, WrapAsync(async (req, res) => {
-    let { title, description, imageURL, price, location, country } = req.body;
-
-    const newListing = new Listing({
-        title: title,
-        description: description,
-        imageURL: imageURL,
-        price: price ? price : 0,
-        location: location,
-        country: country
-    });
-    await newListing.save();
-    req.flash('success', 'Listing has been added successfully.');
-    res.redirect('/listings');
-}));
+router.post('/addnew', listingValidation, isUserLoggedIn, WrapAsync(addNewListingController));
 
 // Form to edit listing
-router.get('/:listing_id/edit', isUserLoggedIn, isListingOwner, WrapAsync(async (req, res) => {
-    const listing = await Listing.findById(req.params.listing_id);
-    res.render('listing/edit.ejs', { listing });
-}));
+router.get('/:listing_id/edit', isUserLoggedIn, isListingOwner, WrapAsync(editListingFormController));
 
 // Save changes in edit listing
-router.put('/:listing_id', listingValidation, isUserLoggedIn, isListingOwner, WrapAsync(async (req, res) => {
-    const { title, description, imageURL, price, location, country } = req.body;
-    const updated_listing = {
-        title: title,
-        description: description,
-        imageURL: imageURL,
-        price: price ? price.replace(/,/g, '') : 0,
-        location: location,
-        country: country
-    }
-    const listing = await Listing.findByIdAndUpdate(req.params.listing_id, updated_listing, { runValidators: true });
-    req.flash('success', 'Listing has been updated successfully.');
-    res.redirect('/listings');
-}));
+router.put('/:listing_id', listingValidation, isUserLoggedIn, isListingOwner, WrapAsync(editListingController));
 
 // View details of listing
-router.get('/:listing_id/view', WrapAsync(async (req, res) => {
-    const listing = await Listing.findById(req.params.listing_id).populate({
-        path: 'reviews',
-        populate: {
-            path: 'reviewed_by'
-        }
-    }).populate('created_by');
-    // console.log('listing detail : ', listing.reviews[0].reviewed_by.username);
-    res.render('listing/view.ejs', { listing });
-}));
+router.get('/:listing_id/view', WrapAsync(viewListingDetailsController));
 
 // Delete listing from database
-router.delete('/:listing_id', isUserLoggedIn, isListingOwner, WrapAsync(async (req, res) => {
-
-    await Listing.findByIdAndDelete(req.params.listing_id)
-        .then(() => {
-            req.flash('success', 'Listing has been deleted successfully.');
-            res.redirect('/listings');
-        })
-        .catch((err) => {
-            res.send('Cannot delete due to error', err);
-        })
-
-}));
-
-
+router.delete('/:listing_id', isUserLoggedIn, isListingOwner, WrapAsync(deleteListingController));
 
 module.exports = router;
 
