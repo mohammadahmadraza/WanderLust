@@ -3,6 +3,9 @@ const router = express.Router({ mergeParams: true });
 const Listing = require('../models/Listing');
 const WrapAsync = require('../utilis/WrapAsync');
 const ExpressError = require('../utilis/ExpressError');
+const { storage } = require('../cloudConfig');
+const multer = require('multer');
+const upload = multer({ storage });
 const { listingSchema } = require('../schema');
 const { isUserLoggedIn, isListingOwner } = require('../middleware');
 const { showAllListingsController, addNewListingFormController, addNewListingController,
@@ -30,8 +33,8 @@ router.get('/', showAllListingsController);
 router.get('/addnew', isUserLoggedIn, addNewListingFormController);
 
 // Save new listing data to database
-router.post('/addnew', listingValidation, isUserLoggedIn, WrapAsync(addNewListingController));
-
+router.post('/addnew', isUserLoggedIn, upload.single('imageURL'), WrapAsync(addNewListingController));
+// listingValidation
 // Form to edit listing
 router.get('/:listing_id/edit', isUserLoggedIn, isListingOwner, WrapAsync(editListingFormController));
 

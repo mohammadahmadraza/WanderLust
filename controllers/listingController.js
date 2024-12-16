@@ -10,18 +10,19 @@ module.exports.addNewListingFormController = (req, res) => {
 }
 
 module.exports.addNewListingController = async (req, res) => {
-    let { title, description, imageURL, price, location, country } = req.body;
+    // res.send(req.file);
+    // let { title, description, imageURL, price, location, country } = req.body;
 
-    const newListing = new Listing({
-        title: title,
-        description: description,
-        imageURL: imageURL,
-        price: price ? price : 0,
-        location: location,
-        country: country,
-        created_by: res.locals.currUser._id
-    });
-    await newListing.save();
+    // const newListing = new Listing({
+    //     title: title,
+    //     description: description,
+    //     imageURL: imageURL,
+    //     price: price ? price : 0,
+    //     location: location,
+    //     country: country,
+    //     created_by: res.locals.currUser._id
+    // });
+    // await newListing.save();
     req.flash('success', 'Listing has been added successfully.');
     res.redirect('/listings');
 }

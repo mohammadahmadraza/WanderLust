@@ -5,7 +5,7 @@
         <div class="container mt-3 w-75 shadow p-4 rounded">
             <a href="/listings" class="btn btn-secondary btn-sm mb-3 "> <i class="fa-solid fa-arrow-left"></i> Back</a>
             <h3>Add new listing</h3>
-            <form action="/listings/addnew" method="post">
+            <form action="/listings/addnew" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input name="title" type="text" class="form-control" id="title" placeholder="Enter title here"
