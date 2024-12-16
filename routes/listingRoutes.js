@@ -33,13 +33,15 @@ router.get('/', showAllListingsController);
 router.get('/addnew', isUserLoggedIn, addNewListingFormController);
 
 // Save new listing data to database
-router.post('/addnew', isUserLoggedIn, upload.single('imageURL'), WrapAsync(addNewListingController));
+router.post('/addnew', isUserLoggedIn, upload.single('image'), WrapAsync(addNewListingController));
 // listingValidation
+
 // Form to edit listing
 router.get('/:listing_id/edit', isUserLoggedIn, isListingOwner, WrapAsync(editListingFormController));
 
 // Save changes in edit listing
-router.put('/:listing_id', listingValidation, isUserLoggedIn, isListingOwner, WrapAsync(editListingController));
+router.put('/:listing_id', isUserLoggedIn, isListingOwner, upload.single('image'), WrapAsync(editListingController));
+// listingValidation
 
 // View details of listing
 router.get('/:listing_id/view', WrapAsync(viewListingDetailsController));

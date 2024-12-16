@@ -19,6 +19,4 @@ const insertSampleData = async () => {
         });
 
 }
-
-
 insertSampleData();
