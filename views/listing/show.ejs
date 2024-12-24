@@ -31,6 +31,9 @@
             border-radius: 0.5rem;
             margin-left: auto;
         }
+        .gst {
+            display: none;
+        }
     </style>
 
     <body>
@@ -90,7 +93,7 @@
                 </p>
             </div>
             <div class="tax-btn">
-                <div class="form-check form-switch form-check-reverse">
+                <div class="form-check form-switch form-check-reverse" id="tax-switch">
                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse">
                     <label class="form-check-label" for="flexSwitchCheckReverse">Display total with taxes</label>
                 </div>
@@ -129,5 +132,28 @@
                 </a>
                 <% } %>
         </div>
+
+        <script>
+            let tax_switch = document.getElementById('tax-switch');
+            // console.log('tax switch', tax_switch);
+
+            tax_switch.addEventListener('click', () => {
+                let items = document.getElementsByClassName('gst');
+
+                for (item of items) {
+                    if (item.style.display != 'inline') {
+                        item.style.display = 'inline';
+                    }
+                    else {
+                        // console.log('Item wit GST Class :: ', item);
+                        item.style.display = 'none';
+
+                    }
+
+                }
+            })
+
+
+        </script>
 
     </body>
