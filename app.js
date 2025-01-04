@@ -17,7 +17,8 @@ const User = require('./models/User.js');
 const { listingRoutes, reviewRoutes, userRoutes } = require('./routes/index.js');
 
 //URL to connect with wanderlust database
-const MONGOOSEURL = 'mongodb://localhost:27017/wanderlust';
+// const MONGOOSEURL = 'mongodb://localhost:27017/wanderlust';
+const DB_URL = process.env.DB_URL;
 
 //Mandatory settings for the server
 app.set('view engine', 'ejs');
@@ -29,7 +30,7 @@ app.engine('ejs', ejsMate);
 
 // Function to connect with database
 const main = async () => {
-    await mongoose.connect(MONGOOSEURL);
+    await mongoose.connect(DB_URL);
 }
 
 main().then(res => console.log('Connected to database successfully.'))
@@ -37,7 +38,7 @@ main().then(res => console.log('Connected to database successfully.'))
 
 //Cookies option
 const cookiesOption = {
-    secret: 'wanderlustapp',
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookies: {

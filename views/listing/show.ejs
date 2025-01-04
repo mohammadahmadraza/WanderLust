@@ -25,12 +25,13 @@
             margin: 0;
         }
 
-        .tax-btn {
+        #tax-switch {
             border: 1px solid rgb(88, 88, 88);
             padding: 0.5rem;
             border-radius: 0.5rem;
             margin-left: auto;
         }
+
         .gst {
             display: none;
         }
@@ -92,11 +93,11 @@
                     Painting Club
                 </p>
             </div>
-            <div class="tax-btn">
-                <div class="form-check form-switch form-check-reverse" id="tax-switch">
-                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse">
-                    <label class="form-check-label" for="flexSwitchCheckReverse">Display total with taxes</label>
-                </div>
+            <div class="tax-btn" id="tax-switch">
+            <div class="form-check form-switch form-check-reverse" >
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse">
+                <label class="form-check-label" for="flexSwitchCheckReverse">Display total with taxes</label>
+            </div>
             </div>
 
         </div>
@@ -137,10 +138,18 @@
             let tax_switch = document.getElementById('tax-switch');
             // console.log('tax switch', tax_switch);
 
-            tax_switch.addEventListener('click', () => {
-                let items = document.getElementsByClassName('gst');
+            tax_switch.addEventListener('click', (event) => {
 
+                // console.log('Event : ', event);
+                // event.stopPropagation();
+                let items = document.getElementsByClassName('gst');
+                console.log('BTN Clicked.');
+                // console.log('Items : ', items);
+                console.log('Event Target : ', event.target);
+                // if (event.target && event.target.id === 'flexSwitchCheckReverse') {
                 for (item of items) {
+                    console.log(' Default Style : Item Style : ', item.style.display);
+
                     if (item.style.display != 'inline') {
                         item.style.display = 'inline';
                     }
@@ -149,8 +158,10 @@
                         item.style.display = 'none';
 
                     }
+                    console.log(' After modification : Item Style : ', item.style.display);
 
                 }
+                // }
             })
 
 
