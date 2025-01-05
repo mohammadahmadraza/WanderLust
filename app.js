@@ -14,6 +14,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/User.js');
+const MongoStore = require('connect-mongo');
 const { listingRoutes, reviewRoutes, userRoutes } = require('./routes/index.js');
 
 //URL to connect with wanderlust database
@@ -36,9 +37,19 @@ const main = async () => {
 main().then(res => console.log('Connected to database successfully.'))
     .catch(err => console.log('Error Occured While connectiing to database.'));
 
+
+const store = MongoStore.create({
+    mongoUrl: DB_URL,
+    crypto: {
+        secret: process.env.SECRET
+    },
+    touchAfter: 24 * 3600
+})
+
 //Cookies option
 const cookiesOption = {
     secret: process.env.SECRET,
+    store,
     resave: false,
     saveUninitialized: true,
     cookies: {
