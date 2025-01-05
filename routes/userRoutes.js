@@ -3,7 +3,7 @@ const router = express.Router();
 const WrapAsync = require('../utilis/WrapAsync');
 const passport = require('passport');
 const { saveRedirectURL } = require('../middleware');
-const { signupFormController, signupController, loginFormController, 
+const { signupFormController, signupController, loginFormController,
     loginController, logoutController } = require('../controllers/userController');
 
 // Form for user sign up
